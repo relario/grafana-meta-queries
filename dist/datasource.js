@@ -200,16 +200,26 @@ function (angular, _, dateMath, moment) {
 
 
       }
-            else if (target.queryType === 'Arithmetic') {
+             else if (target.queryType === 'Arithmetic') {
 
         var deltaArray = [];
         var queryLetters = Object.keys(targetsByRefId);
 
           promise = $q.all(Object.values(promisesByRefId)).then(function(results) {
 
+//start loop here for each series
 
-              var originSeriesName = '33';
-              var expression = 'A["' + originSeriesName + '"]-C["PAST-33"]';
+        var seriesArray = [];
+        var resultOrigin = results[0];
+        for(var j=0;j<resultOrigin.data.length;j++){
+                var resultOriginMetric = resultOrigin.data[j];
+                var metric = resultOriginMetric.target;
+                seriesArray.push({"name":metric});
+        }
+
+seriesArray.forEach(function (series) {
+              var originSeriesName = series.name;
+              var expression = 'A["' + originSeriesName + '"]-C["PAST-' + originSeriesName + '"]';
 
               var functionArgs = queryLetters.join(', ');
               var functionBody = 'return ('+expression+');';
@@ -236,6 +246,9 @@ function (angular, _, dateMath, moment) {
                   }
 
               }
+
+             // this hash table should only contain the two series that need delta calculated
+
               var datapoints= [];
               Object.keys(resultsHash).forEach(function (datapointTime) {
                   var data = resultsHash[datapointTime];
@@ -250,13 +263,14 @@ function (angular, _, dateMath, moment) {
 
               });
 
-deltaArray.push({"target": 'DELTA-' + originSeriesName,
+              deltaArray.push({"target": 'DELTA-' + originSeriesName,
                                         "datapoints":datapoints,
                                         "hide": target.hide});
 
-
-              return deltaArray;
+//end loop here
 });
+              return deltaArray;
+        });
       }
 
 
