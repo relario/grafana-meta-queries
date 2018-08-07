@@ -115,21 +115,20 @@ function (angular, _, dateMath, moment) {
 
         promise = datasourceSrv.get(options.targets[0].datasource).then(function(ds) {
             return ds.query(options).then(function (result) {
-              var datapoints = []
+              var pastArray = [];
               var data = result.data;
               data.forEach(function (datum) {
-                  if(datum.target===metric){
+                    var datapoints = [];
                     datum.datapoints.forEach(function (datapoint) {
                         datapoint[1] = dateToMoment(new Date(datapoint[1]),false).subtract(periodsToShift,'hours').toDate().getTime();
                         datapoints.push(datapoint)
-                    })
-                  }
+                    });
+                      pastArray.push({"target": 'PAST-' + datum.target,
+                                        "datapoints":datapoints,
+                                        "hide": target.hide});
+                  
               });
-              return [{
-                "target": outputMetricName,
-                 "datapoints": datapoints,
-                  "hide" : target.hide
-              }];
+              return pastArray;
                 // var fromMs = formatTimestamp(from);
                 // metrics.forEach(function (metric) {
                 //     if (!_.isEmpty(metric.datapoints[0]) && metric.datapoints[0][1] < fromMs) {
@@ -245,7 +244,7 @@ function (angular, _, dateMath, moment) {
 
 
               return [{
-                  "target": outputMetricName,
+                  "target": 'DELTA-' + outputMetricName,
                   "datapoints": datapoints,
                   "hide" : target.hide
               }];
