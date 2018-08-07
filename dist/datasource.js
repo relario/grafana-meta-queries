@@ -98,6 +98,8 @@ function (angular, _, dateMath, moment) {
       var options = angular.copy(opt);
 
       var promise = null;
+		  
+      var pastArray = [];
 
       var outputMetricName = target.outputMetricName;
       if (target.queryType === 'TimeShift') {
@@ -115,7 +117,6 @@ function (angular, _, dateMath, moment) {
 
         promise = datasourceSrv.get(options.targets[0].datasource).then(function(ds) {
             return ds.query(options).then(function (result) {
-              var pastArray = [];
               var data = result.data;
               data.forEach(function (datum) {
                     var datapoints = [];
@@ -199,11 +200,17 @@ function (angular, _, dateMath, moment) {
 
 
       }
-      else if (target.queryType === 'Arithmetic') {
-          var expression = target.expression;
-          var queryLetters = Object.keys(targetsByRefId);
+            else if (target.queryType === 'Arithmetic') {
+
+        var deltaArray = [];
+        var queryLetters = Object.keys(targetsByRefId);
 
           promise = $q.all(Object.values(promisesByRefId)).then(function(results) {
+
+
+              var originSeriesName = '33';
+              var expression = 'A["' + originSeriesName + '"]-C["PAST-33"]';
+
               var functionArgs = queryLetters.join(', ');
               var functionBody = 'return ('+expression+');';
 
@@ -217,7 +224,8 @@ function (angular, _, dateMath, moment) {
                   for(var j=0;j<resultByQuery.data.length;j++){
                       var resultByQueryMetric = resultByQuery.data[j];
                       var metricName = resultByQueryMetric.target;
-                      if(resultByQueryMetric.datapoints){
+
+                       if(resultByQueryMetric.datapoints){
                           for(var k=0;k<resultByQueryMetric.datapoints.length;k++){
                               var datapoint = resultByQueryMetric.datapoints[k];
                               resultsHash[datapoint[1]] = resultsHash[datapoint[1]] || [];
@@ -242,13 +250,13 @@ function (angular, _, dateMath, moment) {
 
               });
 
+deltaArray.push({"target": 'DELTA-' + originSeriesName,
+                                        "datapoints":datapoints,
+                                        "hide": target.hide});
 
-              return [{
-                  "target": 'DELTA-' + outputMetricName,
-                  "datapoints": datapoints,
-                  "hide" : target.hide
-              }];
-          })
+
+              return deltaArray;
+});
       }
 
 
