@@ -107,8 +107,8 @@ function (angular, _, dateMath, moment) {
 
 
 
-        options.range.from._d = dateToMoment(options.range.from, false).add(periodsToShift,'days').toDate();
-        options.range.to._d = dateToMoment(options.range.to, false).add(periodsToShift,'days').toDate();
+        options.range.from._d = dateToMoment(options.range.from, false).add(periodsToShift,'hours').toDate();
+        options.range.to._d = dateToMoment(options.range.to, false).add(periodsToShift,'hours').toDate();
         var metaTarget = angular.copy(targetsByRefId[query]);
         metaTarget.hide = false;
         options.targets = [metaTarget]
@@ -120,7 +120,7 @@ function (angular, _, dateMath, moment) {
               data.forEach(function (datum) {
                   if(datum.target===metric){
                     datum.datapoints.forEach(function (datapoint) {
-                        datapoint[1] = dateToMoment(new Date(datapoint[1]),false).subtract(periodsToShift,'days').toDate().getTime();
+                        datapoint[1] = dateToMoment(new Date(datapoint[1]),false).subtract(periodsToShift,'hours').toDate().getTime();
                         datapoints.push(datapoint)
                     })
                   }
