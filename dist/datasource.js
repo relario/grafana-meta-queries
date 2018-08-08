@@ -105,9 +105,6 @@ function (angular, _, dateMath, moment) {
       if (target.queryType === 'TimeShift') {
         var periodsToShift = target.periods;
         var query = target.query;
-        var metric = target.metric;
-
-
 
         options.range.from._d = dateToMoment(options.range.from, false).add(periodsToShift,'hours').toDate();
         options.range.to._d = dateToMoment(options.range.to, false).add(periodsToShift,'hours').toDate();
@@ -124,7 +121,7 @@ function (angular, _, dateMath, moment) {
                         datapoint[1] = dateToMoment(new Date(datapoint[1]),false).subtract(periodsToShift,'hours').toDate().getTime();
                         datapoints.push(datapoint)
                     });
-                      pastArray.push({"target": 'PAST-' + datum.target,
+                      pastArray.push({"target": datum.target,
                                         "datapoints":datapoints,
                                         "hide": target.hide});
                   
@@ -219,7 +216,7 @@ function (angular, _, dateMath, moment) {
 
 seriesArray.forEach(function (series) {
               var originSeriesName = series.name;
-              var expression = 'A["' + originSeriesName + '"]-C["PAST-' + originSeriesName + '"]';
+              var expression = 'A["' + originSeriesName + '"]-C["' + originSeriesName + '"]';
 
               var functionArgs = queryLetters.join(', ');
               var functionBody = 'return ('+expression+');';
@@ -263,7 +260,7 @@ seriesArray.forEach(function (series) {
 
               });
 
-              deltaArray.push({"target": 'DELTA-' + originSeriesName,
+              deltaArray.push({"target": originSeriesName,
                                         "datapoints":datapoints,
                                         "hide": target.hide});
 
