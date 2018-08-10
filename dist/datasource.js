@@ -209,6 +209,11 @@ function (angular, _, dateMath, moment) {
         }
 
 seriesArray.forEach(function (series) {
+	
+	if( typeof queryLetters[1] === 'undefined' ){
+        return;
+}
+	
               var originSeriesName = series.name;
               var expression = queryLetters[0] + '["' + originSeriesName + '"]' + target.expression + queryLetters[1] + '["' + originSeriesName + '"]';
 
