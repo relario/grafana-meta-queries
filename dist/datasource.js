@@ -105,6 +105,7 @@ function (angular, _, dateMath, moment) {
       if (target.queryType === 'TimeShift') {
         var periodsToShift = target.periods;
         var query = target.query;
+        var pastArray = [];
 
         options.range.from._d = dateToMoment(options.range.from, false).add(periodsToShift,'hours').toDate();
         options.range.to._d = dateToMoment(options.range.to, false).add(periodsToShift,'hours').toDate();
@@ -114,6 +115,8 @@ function (angular, _, dateMath, moment) {
 
         promise = datasourceSrv.get(options.targets[0].datasource).then(function(ds) {
             return ds.query(options).then(function (result) {
+
+
               var data = result.data;
               data.forEach(function (datum) {
                     var datapoints = [];
@@ -124,15 +127,9 @@ function (angular, _, dateMath, moment) {
                       pastArray.push({"target": datum.target,
                                         "datapoints":datapoints,
                                         "hide": target.hide});
-                  
+
               });
               return pastArray;
-                // var fromMs = formatTimestamp(from);
-                // metrics.forEach(function (metric) {
-                //     if (!_.isEmpty(metric.datapoints[0]) && metric.datapoints[0][1] < fromMs) {
-                //         metric.datapoints[0][1] = fromMs;
-                //     }
-                // });
 
             });
           });
@@ -197,14 +194,11 @@ function (angular, _, dateMath, moment) {
 
 
       }
-             else if (target.queryType === 'Arithmetic') {
-
+      else if (target.queryType === 'Arithmetic') {
         var deltaArray = [];
         var queryLetters = Object.keys(targetsByRefId);
 
-          promise = $q.all(Object.values(promisesByRefId)).then(function(results) {
-
-//start loop here for each series
+        promise = $q.all(Object.values(promisesByRefId)).then(function(results) {
 
         var seriesArray = [];
         var resultOrigin = results[0];
@@ -216,7 +210,7 @@ function (angular, _, dateMath, moment) {
 
 seriesArray.forEach(function (series) {
               var originSeriesName = series.name;
-              var expression = 'A["' + originSeriesName + '"]-C["' + originSeriesName + '"]';
+              var expression = queryLetters[0] + '["' + originSeriesName + '"]' + target.expression + queryLetters[1] + '["' + originSeriesName + '"]';
 
               var functionArgs = queryLetters.join(', ');
               var functionBody = 'return ('+expression+');';
@@ -244,8 +238,6 @@ seriesArray.forEach(function (series) {
 
               }
 
-             // this hash table should only contain the two series that need delta calculated
-
               var datapoints= [];
               Object.keys(resultsHash).forEach(function (datapointTime) {
                   var data = resultsHash[datapointTime];
@@ -264,8 +256,7 @@ seriesArray.forEach(function (series) {
                                         "datapoints":datapoints,
                                         "hide": target.hide});
 
-//end loop here
-});
+        });
               return deltaArray;
         });
       }
