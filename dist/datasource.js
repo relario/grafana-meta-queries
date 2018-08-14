@@ -299,25 +299,33 @@ seriesArray.forEach(function (series) {
 
               }
 
-              var datapoints= [];
+                           var datapoints= [];
               Object.keys(resultsHash).forEach(function (datapointTime) {
                   var data = resultsHash[datapointTime];
                   var result = 0;
                   try {
                       result = expressionFunction.apply(this,data)
                   }
-                  catch(err) {
-                      console.log(err);
-                  }
-                  datapoints.push([result,parseInt(datapointTime)])
+                  catch(err){
+console.log(data);
+                      console.log('expression failed! ' + err);
 
+                  }
+                  
+
+if (isNaN(result)) {
+    return;
+  }else{
+datapoints.push([result,parseInt(datapointTime)]);
+        } 
               });
 
               deltaArray.push({"target": originSeriesName,
                                         "datapoints":datapoints,
                                         "hide": target.hide});
 
-        });
+
+ });
               return deltaArray;
         });
       }
