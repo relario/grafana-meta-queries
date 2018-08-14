@@ -26,6 +26,7 @@ export declare class MetaQueriesQueryCtrl extends QueryCtrl {
     queryTypeValidators: {
         "TimeShift": any;
         "MovingAverage": any;
+		"Aggregate": any;
         "Arithmetic": any;
     };
     defaultQueryType: string;

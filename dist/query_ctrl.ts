@@ -30,6 +30,7 @@ export class MetaQueriesQueryCtrl extends QueryCtrl {
 
     queryTypeValidators = {
       "TimeShift": this.validateTimeShiftQuery.bind(this),
+	  "Aggregate": this.validateAggregateQuery.bind(this),
       "MovingAverage": this.validateMovingAverageQuery.bind(this),
       "Arithmetic": this.validateArithmeticQuery.bind(this),
     };
@@ -93,6 +94,19 @@ export class MetaQueriesQueryCtrl extends QueryCtrl {
     validateMovingAverageQuery(target, errs) {
       if (!target.periods) {
         errs.periods = "Must list specify the period for moving average";
+        return false;
+      }
+      var intPeriods = parseInt(target.periods);
+      if (isNaN(intPeriods)) {
+        errs.periods = "Periods must be an integer";
+        return false;
+      }
+      return true;
+    }
+	
+	validateAggregateQuery(target, errs) {
+      if (!target.periods) {
+        errs.periods = "Must list specify the period for aggregation";
         return false;
       }
       var intPeriods = parseInt(target.periods);
