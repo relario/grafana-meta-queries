@@ -23,9 +23,9 @@
       </label>
       <input type="text" class="input-small gf-form-input width-10" spellcheck='false' ng-model="ctrl.target.outputMetricName" ng-blur="ctrl.targetBlur()" placeholder="series label" data-min-length=1>
     </div>
-                <div ng-switch-when="TimeShift" ng-switch-when-separator="|" class="gf-form max-width-30">
+                <div ng-switch-when="Arithmetic" ng-switch-when-separator="|" class="gf-form max-width-30">
 <label class="gf-form-label query-keyword width-20">
-        Force 0 Timeshift for empty results
+        Treat Missing Timeshift As 0
       </label>
               <gf-form-switch class="gf-form" label-class="width-10" checked="ctrl.target.forceZeroResults" on-change="ctrl.targetBlur()">
     </gf-form-switch>

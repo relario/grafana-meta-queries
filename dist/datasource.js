@@ -253,6 +253,7 @@ function (angular, _, dateMath, moment) {
       else if (target.queryType === 'Arithmetic') {
         var deltaArray = [];
         var queryLetters = Object.keys(targetsByRefId);
+        var forceZero = target.forceZeroResults;
 
         promise = $q.all(Object.values(promisesByRefId)).then(function(results) {
 
@@ -265,19 +266,27 @@ function (angular, _, dateMath, moment) {
         }
 
 seriesArray.forEach(function (series) {
-	
-	if( typeof queryLetters[1] === 'undefined' ){
+
+if( typeof queryLetters[1] === 'undefined' ){
         return;
 }
-	
-              var originSeriesName = series.name;
-              var expression = queryLetters[0] + '["' + originSeriesName + '"]' + target.expression + queryLetters[1] + '["' + originSeriesName + '"]';
+
+          var originSeriesName = series.name;
+             var expression = queryLetters[0] + '["' + originSeriesName + '"]' + target.expression + queryLetters[1] + '["' + originSeriesName + '"]';
+
+             var forceExpression = queryLetters[0] + '["' + originSeriesName + '"]';
 
               var functionArgs = queryLetters.join(', ');
               var functionBody = 'return ('+expression+');';
-
+              var forceBody = 'return (' + forceExpression+');';
+try {
               var expressionFunction = new Function(functionArgs, functionBody);
-
+var forceFunction = new Function(functionArgs, forceBody);
+}
+catch(err) {
+console.log('func error: ' + functionArgs + ' ' + functionBody);
+console.log(err);
+}
               var resultsHash= {};
               for(var i=0;i<results.length;i++){
 
@@ -299,19 +308,25 @@ seriesArray.forEach(function (series) {
 
               }
 
-                           var datapoints= [];
+                       var datapoints= [];
               Object.keys(resultsHash).forEach(function (datapointTime) {
                   var data = resultsHash[datapointTime];
                   var result = 0;
                   try {
-                      result = expressionFunction.apply(this,data)
-                  }
+
+if(Boolean(forceZero)===true){
+result = forceFunction.apply(data,data);
+}else{
+
+                      result = expressionFunction.apply(this,data);
+      }
+           }
                   catch(err){
-console.log(data);
-                      console.log('expression failed! ' + err);
+
+console.log(err);
 
                   }
-                  
+
 
 if (isNaN(result)) {
     return;
