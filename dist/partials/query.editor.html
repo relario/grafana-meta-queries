@@ -13,8 +13,8 @@
       </div>
     </div>
 
-     <div class="gf-form" ng-switch on="ctrl.target.queryType">
-<div ng-switch-when="MovingAverage|Aggregate" ng-switch-when-separator="|" class="gf-form max-width-10">
+    <div class="gf-form" ng-switch on="ctrl.target.queryType">
+<div ng-switch-when="MovingAverage|Aggregate" ng-switch-when-separator="|" class="gf-form max-width-20">
 <label class="gf-form-label query-keyword width-10">
         Output Name
         <a bs-tooltip="ctrl.errors.outputMetricName" style="color: rgb(229, 189, 28)" ng-show="ctrl.errors.outputMetricName">
@@ -57,7 +57,7 @@
     </div>
     <div ng-switch-when="Arithmetic" ng-switch-when-separator="|" class="gf-form">
       <label class="gf-form-label query-keyword width-10">
-        Operation Type
+        Operation Logic
       </label>
       <input type="text" class="gf-form-input width-20" ng-model="ctrl.target.expression" spellcheck='false' placeholder="query" ng-blur="ctrl.targetBlur()"  />
       <label class="gf-form-label" bs-tooltip="ctrl.target.errors.expression" style="color: rgb(229, 189, 28)" ng-show="ctrl.target.errors.expression">
