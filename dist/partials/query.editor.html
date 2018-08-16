@@ -29,7 +29,7 @@
   </div>
 
   <div class="gf-form-inline" ng-switch on="ctrl.target.queryType">
-    <div ng-switch-when="MovingAverage|TimeShift|Aggregate" ng-switch-when-separator="|" class="gf-form max-width-20">
+    <div ng-switch-when="MovingAverage|TimeShift|Aggregate" ng-switch-when-separator="|" class="gf-form max-width-28">
       <label class="gf-form-label query-keyword width-9">
         Periods
       </label>
@@ -39,8 +39,8 @@
       </label>
     </div>
     <div ng-switch-when="MovingAverage|TimeShift|Aggregate" ng-switch-when-separator="|" class="gf-form">
-      <label class="gf-form-label query-keyword width-4">
-        Query
+      <label class="gf-form-label query-keyword width-8">
+        Query Letter
       </label>
       <input type="text" class="gf-form-input" ng-model="ctrl.target.query" spellcheck='false' placeholder="query" ng-blur="ctrl.targetBlur()" bs-typeahead="ctrl.getQueryLetters"  />
       <label class="gf-form-label" bs-tooltip="ctrl.target.errors.query" style="color: rgb(229, 189, 28)" ng-show="ctrl.target.errors.query">
