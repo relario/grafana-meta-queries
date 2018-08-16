@@ -21,8 +21,16 @@
           <i class="fa fa-warning"></i>
         </a>
       </label>
-      <input type="text" class="input-small gf-form-input width-10" spellcheck='false' ng-model="ctrl.target.outputMetricName" ng-blur="ctrl.targetBlur()" placeholder="metric name" data-min-length=1>
-    </div></div>
+      <input type="text" class="input-small gf-form-input width-10" spellcheck='false' ng-model="ctrl.target.outputMetricName" ng-blur="ctrl.targetBlur()" placeholder="series label" data-min-length=1>
+    </div>
+                <div ng-switch-when="TimeShift" ng-switch-when-separator="|" class="gf-form max-width-30">
+<label class="gf-form-label query-keyword width-20">
+        Force 0 Timeshift for empty results
+      </label>
+              <gf-form-switch class="gf-form" label-class="width-10" checked="ctrl.target.forceZeroResults" on-change="ctrl.targetBlur()">
+    </gf-form-switch>
+          </div>
+</div>
     <div class="gf-form gf-form--grow">
       <div class="gf-form-label gf-form-label--grow"></div>
     </div>
