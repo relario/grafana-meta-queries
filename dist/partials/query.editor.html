@@ -13,15 +13,16 @@
       </div>
     </div>
 
-    <div class="gf-form">
-      <label class="gf-form-label query-keyword width-10">
+     <div class="gf-form" ng-switch on="ctrl.target.queryType">
+<div ng-switch-when="MovingAverage|Aggregate" ng-switch-when-separator="|" class="gf-form max-width-10">
+<label class="gf-form-label query-keyword width-10">
         Output Name
         <a bs-tooltip="ctrl.errors.outputMetricName" style="color: rgb(229, 189, 28)" ng-show="ctrl.errors.outputMetricName">
           <i class="fa fa-warning"></i>
         </a>
       </label>
       <input type="text" class="input-small gf-form-input width-10" spellcheck='false' ng-model="ctrl.target.outputMetricName" ng-blur="ctrl.targetBlur()" placeholder="metric name" data-min-length=1>
-    </div>
+    </div></div>
     <div class="gf-form gf-form--grow">
       <div class="gf-form-label gf-form-label--grow"></div>
     </div>
@@ -45,13 +46,14 @@
       <label class="gf-form-label" bs-tooltip="ctrl.target.errors.query" style="color: rgb(229, 189, 28)" ng-show="ctrl.target.errors.query">
         <i class="fa fa-warning"></i>
       </label>
+      <div ng-switch-when="MovingAverage|Aggregate" ng-switch-when-separator="|" class="gf-form max-width-4">
       <label class="gf-form-label query-keyword width-4">
         Metric
       </label>
       <input type="text" class="gf-form-input" ng-model="ctrl.target.metric" spellcheck='false' placeholder="metric" ng-blur="ctrl.targetBlur()"   />
       <label class="gf-form-label" bs-tooltip="ctrl.target.errors.metric" style="color: rgb(229, 189, 28)" ng-show="ctrl.target.errors.metric">
         <i class="fa fa-warning"></i>
-      </label>
+      </label></div>
     </div>
     <div ng-switch-when="Arithmetic" ng-switch-when-separator="|" class="gf-form">
       <label class="gf-form-label query-keyword width-10">
