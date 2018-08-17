@@ -308,14 +308,14 @@ console.log(err);
 
               }
 
-                       var datapoints= [];
+              var datapoints= [];
               Object.keys(resultsHash).forEach(function (datapointTime) {
                   var data = resultsHash[datapointTime];
                   var result = 0;
                   try {
 
-if(Boolean(forceZero)===true){
-result = forceFunction.apply(data,data);
+if(Boolean(forceZero)===true && data.length<2){
+result = forceFunction.apply(queryLetters[0],data);
 }else{
 
                       result = expressionFunction.apply(this,data);

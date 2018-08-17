@@ -38,10 +38,10 @@
 
   <div class="gf-form-inline" ng-switch on="ctrl.target.queryType">
     <div ng-switch-when="MovingAverage|TimeShift|Aggregate" ng-switch-when-separator="|" class="gf-form max-width-28">
-      <label class="gf-form-label query-keyword width-9">
-        Periods
+      <label class="gf-form-label query-keyword width-10">
+        Periods (hours)
       </label>
-      <input type="text" class="gf-form-input" ng-model="ctrl.target.periods" spellcheck='false' placeholder="7" ng-blur="ctrl.targetBlur()" />
+      <input type="text" class="gf-form-input" ng-model="ctrl.target.periods" spellcheck='false' placeholder="-12" ng-blur="ctrl.targetBlur()" />
       <label class="gf-form-label" bs-tooltip="ctrl.target.errors.periods" style="color: rgb(229, 189, 28)" ng-show="ctrl.target.errors.periods">
         <i class="fa fa-warning"></i>
       </label>
