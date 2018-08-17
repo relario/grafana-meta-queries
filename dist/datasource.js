@@ -271,8 +271,15 @@ if( typeof queryLetters[1] === 'undefined' ){
         return;
 }
 
-          var originSeriesName = series.name;
-             var expression = queryLetters[0] + '["' + originSeriesName + '"]' + target.expression + queryLetters[1] + '["' + originSeriesName + '"]';
+        var originSeriesName = series.name;
+
+var expression = target.expression;
+expression = expression.replace('A','{A}');
+expression = expression.replace('B','{B}');
+expression = expression.replace('C','{C}');
+expression = expression.replace('{A}','A["' + originSeriesName + '"]');
+expression = expression.replace('{B}','B["' + originSeriesName + '"]');
+expression = expression.replace('{C}','C["' + originSeriesName + '"]');
 
              var forceExpression = queryLetters[0] + '["' + originSeriesName + '"]';
 
